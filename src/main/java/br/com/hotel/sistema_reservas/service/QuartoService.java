@@ -5,6 +5,7 @@ import br.com.hotel.sistema_reservas.repository.QuartoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuartoService {
@@ -21,6 +22,33 @@ public class QuartoService {
 
     public Quarto salvar(Quarto quarto) {
         return quartoRepository.save(quarto);
+    }
+
+    public Optional<Quarto> buscarPorId(Long id) {
+        return quartoRepository.findById(Math.toIntExact(id));
+    }
+
+    public Quarto atualizar(Long id, Quarto dadosFormulario) {
+        Quarto quartoExistente = quartoRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Quarto não encontrado: " + id));
+
+        quartoExistente.setNumero(dadosFormulario.getNumero());
+        quartoExistente.setTipo(dadosFormulario.getTipo());
+        quartoExistente.setCapacidade(dadosFormulario.getCapacidade());
+        quartoExistente.setDiaria(dadosFormulario.getDiaria());
+
+        return quartoRepository.save(quartoExistente);
+    }
+
+    public void deletar(Long id) {
+        Quarto quarto = quartoRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Quarto não encontrado: " + id));
+
+        quartoRepository.deleteById(Math.toIntExact(id));
     }
 
 }

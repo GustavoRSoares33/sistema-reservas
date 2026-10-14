@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
@@ -28,7 +27,10 @@
 
     <!-- Título da página -->
     <div class="mb-4">
-        <h1 class="h3 mb-1">Cadastro de Quarto</h1>
+        <h1 class="h3 mb-1"
+            th:text="${id == null} ? 'Cadastro de Quarto' : 'Editar Quarto'">
+            Cadastro de Quarto
+        </h1>
 
         <p class="text-secondary mb-0">
             Preencha os dados do quarto para cadastrá-lo no sistema.
@@ -39,7 +41,9 @@
     <div class="card shadow-sm border-0">
         <div class="card-body p-4">
 
-            <form th:action="@{/quartos/salvar}"
+            <form th:action="${id == null}
+                      ? @{/quartos/salvar}
+                      : @{/quartos/atualizar/{id}(id=${id})}"
                   th:object="${quarto}"
                   method="post">
 
@@ -151,7 +155,9 @@
                         Cancelar
                     </a>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit"
+                            class="btn btn-primary"
+                            th:text="${id == null} ? 'Salvar quarto' : 'Atualizar quarto'">
                         Salvar quarto
                     </button>
 
@@ -170,4 +176,3 @@
 
 </body>
 </html>
-```
